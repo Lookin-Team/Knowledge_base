@@ -1,0 +1,167 @@
+{
+  "date": "2026-11-02",
+  "url": "https://base.lookin.team/books",
+  "result": "PASS",
+  "image": "lookin-base-app:v26.09.2-ui20261102-2",
+  "source_commit": "96b4ebec489ace552b22243c55d45787f30523da",
+  "checks": [
+    {
+      "viewport": 1451,
+      "document": 1451,
+      "rightWidth": 240,
+      "rightEdge": 1429,
+      "middleWidth": 665,
+      "labels": [
+        {
+          "width": 175.9375,
+          "height": 21
+        },
+        {
+          "width": 175.9375,
+          "height": 21
+        },
+        {
+          "width": 175.9375,
+          "height": 21
+        },
+        {
+          "width": 175.9375,
+          "height": 21
+        }
+      ]
+    },
+    {
+      "viewport": 1920,
+      "document": 1920,
+      "rightWidth": 240,
+      "rightEdge": 1898,
+      "middleWidth": 1134,
+      "labels": [
+        {
+          "width": 175.9375,
+          "height": 21
+        },
+        {
+          "width": 175.9375,
+          "height": 21
+        },
+        {
+          "width": 175.9375,
+          "height": 21
+        },
+        {
+          "width": 175.9375,
+          "height": 21
+        }
+      ]
+    },
+    {
+      "viewport": 1280,
+      "document": 1280,
+      "rightWidth": 240,
+      "rightEdge": 1258,
+      "middleWidth": 710,
+      "labels": [
+        {
+          "width": 175.9375,
+          "height": 21
+        },
+        {
+          "width": 175.9375,
+          "height": 21
+        },
+        {
+          "width": 175.9375,
+          "height": 21
+        },
+        {
+          "width": 175.9375,
+          "height": 21
+        }
+      ]
+    },
+    {
+      "viewport": 1024,
+      "document": 1024,
+      "rightWidth": 240,
+      "rightEdge": 1002,
+      "middleWidth": 496,
+      "labels": [
+        {
+          "width": 175.9375,
+          "height": 21
+        },
+        {
+          "width": 175.9375,
+          "height": 21
+        },
+        {
+          "width": 175.9375,
+          "height": 21
+        },
+        {
+          "width": 175.9375,
+          "height": 21
+        }
+      ]
+    },
+    {
+      "viewport": 760,
+      "document": 760,
+      "rightWidth": 692,
+      "rightEdge": 726,
+      "middleWidth": 724,
+      "labels": [
+        {
+          "width": 0,
+          "height": 0
+        },
+        {
+          "width": 0,
+          "height": 0
+        },
+        {
+          "width": 0,
+          "height": 0
+        },
+        {
+          "width": 0,
+          "height": 0
+        }
+      ]
+    },
+    {
+      "viewport": 390,
+      "document": 390,
+      "rightWidth": 322,
+      "rightEdge": 356,
+      "middleWidth": 354,
+      "labels": [
+        {
+          "width": 0,
+          "height": 0
+        },
+        {
+          "width": 0,
+          "height": 0
+        },
+        {
+          "width": 0,
+          "height": 0
+        },
+        {
+          "width": 0,
+          "height": 0
+        }
+      ]
+    }
+  ],
+  "mobile_info_content_tabs": "PASS",
+  "book_page_and_shelves_open": "PASS",
+  "css_cache_version": 9,
+  "theme_hashes_verified": true,
+  "database_migrations_performed": false,
+  "data_and_permissions_changed": false,
+  "browser": "Installed Chromium browser, isolated temporary profile",
+  "other_browser_engines_tested": false
+}
