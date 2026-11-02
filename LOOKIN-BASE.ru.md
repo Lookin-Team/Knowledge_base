@@ -19,7 +19,7 @@
 - Известные ограничения безопасности: `server/dependencies/SECURITY.ru.md`.
 
 Официальный upstream остаётся в Git remote `origin`.
-Репозиторий проекта: https://github.com/uchaikadodo-wq/JULLS_hub,
+Репозиторий проекта: https://github.com/Lookin-Team/Knowledge_base,
 для него используется отдельный remote `company`.
 Само добавление remote не означает, что код уже отправлен.
 
