@@ -45,7 +45,7 @@
 
     @if($lookinShell)
         <link rel="stylesheet" href="{{ url('/theme/lookin-base/lookin.css') }}?v=3">
-        <link rel="stylesheet" href="{{ url('/theme/lookin-base/interior.css') }}?v=8">
+        <link rel="stylesheet" href="{{ url('/theme/lookin-base/interior.css') }}?v=9">
     @endif
     @stack('head')
 
