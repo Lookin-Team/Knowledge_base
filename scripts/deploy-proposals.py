@@ -19,7 +19,7 @@ def main():
         'scripts/install-proposals.php','server/proposals/Dockerfile'],cwd=ROOT)
     deploy['remote']('sudo -n mkdir -p '+RELEASE,capture=True)
     deploy['remote']('sudo -n tar -xf - -C '+RELEASE,data=archive,binary=True,capture=True)
-    program=r'''
+    program=(r'''
 import hashlib,json,pathlib,subprocess
 root=pathlib.Path('/opt/lookin-base'); release=root/'releases/proposals-20261103'
 image='lookin-base-app:v26.09.2-proposals20261103-1'
@@ -68,7 +68,7 @@ report={'image':image,'base_image_id':base,'image_id':run(['docker','image','ins
         'git_commit':'REVISION','existing_pages_users_roles_and_app_key_preserved':before==after,'author_ids':[4,5,6],'moderator_ids':[1],'table_install':'PASS','app_health':'PASS'}
 (release/'deployment.json').write_text(json.dumps(report,indent=2)+'\n')
 print(json.dumps(report))
-'''.replace('BASE_ID',BASE_ID).replace('REVISION',revision)
+''').replace('BASE_ID',BASE_ID).replace('REVISION',revision)
     result=deploy['remote']('sudo -n python3 -',data=program,capture=True)
     report=json.loads(result.stdout)
     (ROOT/'local-dev/proposals-deployment-verification.json').write_text(json.dumps(report,indent=2)+'\n')
