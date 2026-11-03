@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Decrypt on the VPS with a key streamed over SSH, restore SQL into a disposable isolated MySQL."""
+import argparse
 import importlib.util
 import json
 from pathlib import Path
@@ -11,7 +12,13 @@ deploy = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(deploy)
 
 def main():
-    record = json.loads((deploy.PRIVATE/'encrypted-backup-verification.json').read_text())
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--backup')
+    parser.add_argument('--sha256')
+    args = parser.parse_args()
+    if bool(args.backup) != bool(args.sha256):
+        parser.error('--backup and --sha256 are required together')
+    record = {'encrypted_backup': args.backup, 'sha256': args.sha256} if args.backup else json.loads((deploy.PRIVATE/'encrypted-backup-verification.json').read_text())
     backup = record['encrypted_backup']
     if not backup.startswith('/opt/lookin-base/backups/encrypted/') or not backup.endswith('.tar.gz.age'):
         raise RuntimeError('Unexpected backup path')
