@@ -21,6 +21,7 @@ lookin-home
             <a class="lk-nav-item is-active" href="{{ url('/') }}" aria-current="page">@icon('contents') Главная</a>
             <a class="lk-nav-item" href="{{ url('/books') }}">@icon('book') Все материалы</a>
             <a class="lk-nav-item" href="{{ url('/favourites') }}">@icon('star') Избранное</a>
+            @include('proposals.nav')
         </nav>
         <div class="lk-nav-label">НАПРАВЛЕНИЯ</div>
         <nav class="lk-directions" aria-label="Поиск по направлениям">

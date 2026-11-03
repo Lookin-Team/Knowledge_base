@@ -13,6 +13,7 @@
             <a class="lk-nav-item {{ request()->is('books*') ? 'is-active' : '' }}" href="{{ url('/books') }}">@icon('book') Все материалы</a>
             <a class="lk-nav-item {{ request()->is('shelves*') ? 'is-active' : '' }}" href="{{ url('/shelves') }}">@icon('bookshelf') Полки</a>
             <a class="lk-nav-item {{ request()->is('favourites*') ? 'is-active' : '' }}" href="{{ url('/favourites') }}">@icon('star') Избранное</a>
+            @include('proposals.nav')
         </nav>
         <div class="lk-nav-label">НАПРАВЛЕНИЯ</div>
         <nav class="lk-directions" aria-label="Поиск по направлениям">
