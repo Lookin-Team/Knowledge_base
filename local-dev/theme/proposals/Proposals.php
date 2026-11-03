@@ -50,12 +50,14 @@ class Proposals extends Controller
     public function index(Request $request)
     {
         $this->access();
-        $queue = self::moderator() && $request->query('queue') === '1';
+        $queue = !$request->is('api/*') && self::moderator() && $request->query('queue') === '1';
         $query = $this->table();
         if (!$queue) {
             $query->where('author_id', user()->id);
         }
-        return view('proposals.index', ['items' => $query->orderByDesc('id')->paginate(25)->withQueryString(), 'queue' => $queue]);
+        $items = $query->orderByDesc('id')->paginate(25)->withQueryString();
+        if ($request->is('api/*')) { return response()->json($items); }
+        return view('proposals.index', ['items' => $items, 'queue' => $queue]);
     }
 
     public function create()
@@ -99,13 +101,17 @@ class Proposals extends Controller
             }
             return $id;
         });
+        if ($request->is('api/*')) { return response()->json(['id' => $id, 'status' => 'pending'], 201); }
         return redirect('/publication-proposals/' . $id);
     }
 
-    public function show(int $id)
+    public function show(Request $request, int $id)
     {
         $this->access();
         $item = $this->proposal($id);
+        if ($request->is('api/*')) {
+            return response()->json(['proposal' => $item, 'files' => DB::table('lookin_proposal_files')->where('proposal_id', $id)->select('id','name','mime','size','attachment_id')->get()]);
+        }
         $queries = app(EntityQueries::class);
         $page = $item->page_id ? $queries->pages->findVisibleById($item->page_id) : null;
         return view('proposals.show', [

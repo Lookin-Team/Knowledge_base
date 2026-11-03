@@ -12,4 +12,14 @@ require_once __DIR__ . '/proposals/Proposals.php';
             \Illuminate\Support\Facades\Route::get('/{id}', [$controller, 'show'])->whereNumber('id');
             \Illuminate\Support\Facades\Route::post('/{id}', [$controller, 'decide'])->whereNumber('id')->middleware('throttle:10,1');
         });
+    // Separate token-authenticated submission API. No moderation, publishing or delete routes.
+    \Illuminate\Support\Facades\Route::middleware(['api', 'throttle:60,1'])
+        ->prefix('api/publication-proposals')->group(function () {
+            $controller = \Lookin\Proposals::class;
+            \Illuminate\Support\Facades\Route::get('/', [$controller, 'index']);
+            \Illuminate\Support\Facades\Route::post('/', [$controller, 'store'])->middleware('throttle:10,1');
+            \Illuminate\Support\Facades\Route::get('/{id}', [$controller, 'show'])->whereNumber('id');
+            \Illuminate\Support\Facades\Route::get('/{id}/files/{fileId}', [$controller, 'download'])->whereNumber(['id', 'fileId']);
+        });
+
 });

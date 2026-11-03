@@ -175,4 +175,32 @@ class ProposalsTest extends TestCase
         $this->assertFalse(\Lookin\Proposals::allowed());
     }
 
+    public function test_agent_token_submits_proposals_but_cannot_publish_or_edit_pages(): void
+    {
+        require_once __DIR__.'/../../scripts/lib/agent-access.php';
+        $roles=\LookinBase\AgentAccess::ensureRoles();
+        $reader=$roles[\LookinBase\AgentAccess::READER];
+        $agent=$this->users->newUser(); $agent->roles()->sync([$reader->id]);
+        config(['lookin_proposals.LOOKIN_PROPOSAL_AUTHOR_ROLE_IDS'=>(string)$reader->id]);
+        $token=(new \BookStack\Api\ApiToken())->forceFill([
+            'user_id'=>$agent->id,'name'=>'Synthetic proposal test','token_id'=>'proposal-test-token',
+            'secret'=>\Illuminate\Support\Facades\Hash::make('synthetic-secret'), 'expires_at'=>now()->addDay()->format('Y-m-d')]);
+        $token->save();
+        $headers=['Authorization'=>'Token proposal-test-token:synthetic-secret'];
+        $this->getJson('/api/publication-proposals')->assertUnauthorized();
+        auth()->forgetGuards();
+        $data=$this->fields(); $data['author_id']=$this->users->admin()->id;
+        $data['files']=[\Illuminate\Http\UploadedFile::fake()->createWithContent('agent.txt','Synthetic agent document')];
+        $response=$this->post('/api/publication-proposals',$data,$headers)->assertCreated()->assertJson(['status'=>'pending']);
+        $id=$response->json('id');
+        $this->assertSame($agent->id,DB::table('lookin_publication_proposals')->find($id)->author_id);
+        $this->getJson('/api/publication-proposals/'.$id,$headers)->assertOk();
+        $file=DB::table('lookin_proposal_files')->where('proposal_id',$id)->first();
+        $this->get('/api/publication-proposals/'.$id.'/files/'.$file->id,$headers)->assertOk()->assertContent('Synthetic agent document');
+        $this->postJson('/api/pages',['book_id'=>$this->entities->book()->id,'name'=>'Forbidden','html'=>'<p>Forbidden</p>'],$headers)->assertForbidden();
+        $this->postJson('/api/publication-proposals/'.$id,['action'=>'publish'],$headers)->assertStatus(405);
+        $this->deleteJson('/api/publication-proposals/'.$id,[],$headers)->assertStatus(405);
+        $this->assertSame('pending',DB::table('lookin_publication_proposals')->find($id)->status);
+    }
+
 }

@@ -1,3 +1,4 @@
 # Verified source image ID: sha256:3f93c500dfe24456b3d9a9b191555114130d51d9bc1ec933e95d62d29b062099
 FROM lookin-base-app:v26.09.2-proposals20261103-1
 COPY local-dev/theme/proposals/Proposals.php /app/themes/lookin-base/proposals/Proposals.php
+COPY local-dev/theme/functions.php /app/themes/lookin-base/functions.php
