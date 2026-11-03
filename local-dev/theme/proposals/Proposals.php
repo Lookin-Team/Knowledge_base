@@ -21,7 +21,9 @@ class Proposals extends Controller
 
     public static function allowed(): bool
     {
-        return auth()->check() && user()->hasAppAccess() && (self::moderator() || in_array((int) user()->id, self::ids('LOOKIN_PROPOSAL_AUTHOR_IDS'), true));
+        return auth()->check() && user()->hasAppAccess() && (self::moderator()
+            || in_array((int) user()->id, self::ids('LOOKIN_PROPOSAL_AUTHOR_IDS'), true)
+            || user()->roles->contains(fn ($role) => in_array((int) $role->id, self::ids('LOOKIN_PROPOSAL_AUTHOR_ROLE_IDS'), true)));
     }
 
     private function access(): void

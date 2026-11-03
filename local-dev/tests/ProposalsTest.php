@@ -11,6 +11,7 @@ class ProposalsTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
+        config(['lookin_proposals.LOOKIN_PROPOSAL_AUTHOR_ROLE_IDS' => '']);
         $this->assertSame('mysql_testing', config('database.default'));
         if (!Schema::hasTable('lookin_publication_proposals')) {
             Schema::create('lookin_publication_proposals', function ($t) {
@@ -155,6 +156,23 @@ class ProposalsTest extends TestCase
         $data['files']=array_map(fn($i)=>\Illuminate\Http\UploadedFile::fake()->createWithContent('file'.$i.'.txt','hello'),range(1,6));
         $this->post('/publication-proposals',$data)->assertSessionHasErrors('files');
         $this->assertSame($before,DB::table('lookin_publication_proposals')->count());
+    }
+
+    public function test_employee_role_automatically_allows_new_accounts_without_moderation(): void
+    {
+        config(['lookin_proposals.LOOKIN_PROPOSAL_AUTHOR_IDS' => '',
+            'lookin_proposals.LOOKIN_PROPOSAL_AUTHOR_ROLE_IDS' => implode(',', $this->users->viewer()->roles->pluck('id')->all())]);
+        $this->asViewer();
+        $this->get('/publication-proposals/new')->assertOk();
+        $new=$this->users->newUser();
+        $new->roles()->sync($this->users->viewer()->roles->pluck('id')->all());
+        $this->actingAs($new);
+        $this->assertTrue(\Lookin\Proposals::allowed());
+        $this->assertFalse(\Lookin\Proposals::moderator());
+        $this->post('/publication-proposals',$this->fields())->assertRedirect();
+        $this->assertFalse(userCan('page-create',$this->entities->book()));
+        $new->roles()->sync([]); $new->load('roles');
+        $this->assertFalse(\Lookin\Proposals::allowed());
     }
 
 }
