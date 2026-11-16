@@ -1,0 +1,12 @@
+[Unit]
+Description=Lookin Base backup every Sunday at 03:30 Moscow
+
+[Timer]
+OnCalendar=Sun *-*-* 03:30:00 Europe/Moscow
+AccuracySec=1min
+# Do not unexpectedly stop the site during office hours after a reboot.
+Persistent=false
+Unit=lookin-drive-backup.service
+
+[Install]
+WantedBy=timers.target

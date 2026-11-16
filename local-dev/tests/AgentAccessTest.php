@@ -108,12 +108,17 @@ class AgentAccessTest extends TestCase
         $this->requestApi('GET', 'pages?filter[id:eq]=' . $page->id)->assertJson(['total' => 0]);
     }
 
-    public function test_revocation_and_expiry_block_token(): void
+    public function test_expiry_blocks_token(): void
     {
         $this->requestApi('GET', 'books')->assertOk();
         $this->token->expires_at = now()->subDay()->format('Y-m-d');
         $this->token->save();
         $this->requestApi('GET', 'books')->assertForbidden();
+    }
+
+    public function test_revocation_blocks_active_token(): void
+    {
+        $this->requestApi('GET', 'books')->assertOk();
         $this->token->delete();
         $this->requestApi('GET', 'books')->assertUnauthorized();
     }
